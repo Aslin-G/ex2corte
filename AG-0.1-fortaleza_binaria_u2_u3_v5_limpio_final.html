@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arquitectura del Computador | Fortaleza Binaria U2-U3</title>
+  <meta name="description" content="Examen virtual autogestionado Offline First de Arquitectura de Computadores, con estética Fortaleza Binaria, pantalla completa, cámara, incidentes de integridad, misiones, evaluación final y certificado descargable." />
+  <style>
+    :root{
+      --page-bg:#f7f1e8;
+      --page-bg-2:#fffdf8;
+      --text:#243746;
+      --text-soft:#637485;
+      --ink:#142536;
+      --muted:#edf3f5;
+      --accent:#08a6bd;
+      --accent-dark:#087789;
+      --cyan:#08a6bd;
+      --gold:#f2b134;
+      --coral:#ee7b63;
+      --green:#5fc59b;
+      --purple:#7257d6;
+      --blue:#2f76d2;
+      --rose:#e85f8c;
+      --success:#238f63;
+      --warning:#ca8216;
+      --danger:#c84f47;
+      --card:rgba(255,255,255,.72);
+      --card-strong:rgba(255,253,248,.94);
+      --line:rgba(36,55,70,.10);
+      --shadow:0 26px 70px rgba(36,55,70,.16);
+      --shadow-soft:0 13px 32px rgba(36,55,70,.10);
+      --glow-cyan:0 0 0 8px rgba(8,166,189,.08),0 18px 42px rgba(8,166,189,.17);
+      --radius:30px;
+    }
+    *{box-sizing:border-box;font-family:"Times New Roman", Times, serif;}
+    html,body{height:100%;margin:0;color:var(--text);background:
+      radial-gradient(circle at 10% 8%,rgba(8,166,189,.22),transparent 26%),
+      radial-gradient(circle at 92% 12%,rgba(242,177,52,.26),transparent 28%),
+      radial-gradient(circle at 82% 86%,rgba(238,123,99,.20),transparent 30%),
+      radial-gradient(circle at 28% 91%,rgba(95,197,155,.17),transparent 27%),
+      linear-gradient(150deg,var(--page-bg),var(--page-bg-2));}
+    body{overflow:hidden;}
+    body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;background-image:linear-gradient(rgba(36,55,70,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(36,55,70,.035) 1px,transparent 1px);background-size:34px 34px;mask-image:radial-gradient(circle at center,black,transparent 78%);}
+    button,input,select,textarea{font:inherit;} button{cursor:pointer;} .hidden{display:none!important;}
+    .author-badge{display:none!important}.top-kicker{display:inline-block;color:var(--accent-dark);font-size:13px;font-weight:bold;letter-spacing:.12em;text-transform:uppercase;margin-bottom:6px}.toolbar-status{display:flex;align-items:center;gap:12px;flex-wrap:wrap;color:var(--text-soft);font-weight:bold}.toolbar-status b{color:var(--ink);font-size:17px}.toolbar-status .sep{opacity:.35}.quiet-note{font-size:13px;color:var(--text-soft);margin-top:10px}
+    #app{height:100%;display:flex;flex-direction:column;}
+    .screen{position:absolute;inset:0;overflow:auto;padding:30px;display:flex;align-items:center;justify-content:center;}
+    .glass{background:var(--card);border:1px solid rgba(255,255,255,.88);backdrop-filter:blur(22px);border-radius:var(--radius);box-shadow:var(--shadow);}
+    .hero-grid{width:min(1180px,100%);display:grid;grid-template-columns:1.12fr .88fr;gap:24px;align-items:stretch;}
+    .hero,.panel{position:relative;overflow:hidden;}
+    .hero{padding:42px;min-height:595px;}
+    .hero:before,.mission-card:before,.final-card:before,.results-card:before{content:"";position:absolute;width:360px;height:360px;border-radius:50%;right:-150px;top:-160px;background:radial-gradient(circle,rgba(8,166,189,.19),transparent 63%);pointer-events:none;}
+    .hero:after{content:"";position:absolute;left:-130px;bottom:-160px;width:330px;height:330px;border-radius:50%;background:radial-gradient(circle,rgba(242,177,52,.20),transparent 65%);pointer-events:none;}
+    .hero>*{position:relative;z-index:1}.panel{padding:28px}.panel:before{content:"";position:absolute;inset:0;background:linear-gradient(160deg,rgba(255,255,255,.58),rgba(255,255,255,.10));pointer-events:none}.panel>*{position:relative;z-index:1}
+    .eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(8,166,189,.10);color:var(--accent-dark);border:1px solid rgba(8,166,189,.23);border-radius:999px;padding:8px 12px;font-size:12px;font-weight:bold;letter-spacing:.09em;text-transform:uppercase;}
+    h1{font-size:clamp(38px,5.5vw,70px);line-height:.91;margin:18px 0 14px;color:var(--ink);letter-spacing:-.055em;} h2,h3{margin:0;color:var(--ink)} p{line-height:1.55}.lead{font-size:19px;color:var(--text-soft);margin:0 0 18px;max-width:850px}.objective{color:var(--text-soft);margin:0;max-width:840px}.small-note{font-size:13px;color:var(--text-soft)}
+    .chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}.chip{border-radius:999px;padding:8px 12px;font-weight:bold;font-size:12px;background:rgba(255,255,255,.74);border:1px solid rgba(36,55,70,.10);color:var(--text-soft);box-shadow:0 6px 18px rgba(36,55,70,.05)}
+    .field{display:flex;flex-direction:column;gap:6px;margin:0 0 13px}.field label{font-size:14px;font-weight:bold;color:var(--ink)}.field input,.field select,.field textarea{width:100%;border:1px solid rgba(36,55,70,.17);border-radius:16px;padding:12px 14px;background:rgba(255,255,255,.88);color:var(--text);outline:none;box-shadow:inset 0 1px 1px rgba(0,0,0,.03);transition:.18s}.field textarea{min-height:82px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:var(--glow-cyan)}
+    .check{display:flex;gap:10px;align-items:flex-start;margin:10px 0;font-size:14px;color:var(--text-soft)}.check input{margin-top:2px;accent-color:var(--accent)}
+    .btn{border:0;border-radius:17px;padding:12px 18px;background:#eef3f5;color:var(--ink);font-weight:bold;box-shadow:var(--shadow-soft);transition:transform .18s ease, box-shadow .18s ease, filter .18s ease;display:inline-flex;align-items:center;justify-content:center;gap:8px;text-decoration:none;position:relative;overflow:hidden}.btn:before{content:"";position:absolute;inset:0;background:linear-gradient(120deg,transparent,rgba(255,255,255,.32),transparent);transform:translateX(-110%);transition:.45s}.btn:hover:before{transform:translateX(110%)}.btn:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(36,55,70,.15)}.btn.primary{background:linear-gradient(135deg,var(--cyan),var(--accent-dark));color:white}.btn.gold{background:linear-gradient(135deg,var(--gold),#dc9515);color:#3f2d0b}.btn.success{background:linear-gradient(135deg,var(--success),#196d4d);color:white}.btn.danger{background:linear-gradient(135deg,var(--danger),#a34037);color:white}.btn.ghost{background:rgba(255,255,255,.70);border:1px solid rgba(36,55,70,.11);box-shadow:none}.btn.small{padding:8px 11px;border-radius:13px;font-size:13px}.btn[disabled]{opacity:.50;filter:grayscale(.3);cursor:not-allowed;transform:none;box-shadow:none}.btn[disabled]:before{display:none}
+    .status-note{border-radius:18px;padding:12px 14px;background:rgba(8,166,189,.08);border:1px solid rgba(8,166,189,.16);color:var(--text);font-size:14px}.status-note.warn{background:rgba(242,177,52,.13);border-color:rgba(242,177,52,.30)}.status-note.danger{background:rgba(200,79,71,.12);border-color:rgba(200,79,71,.28)}.status-note.success{background:rgba(35,143,99,.12);border-color:rgba(35,143,99,.28)}
+    .toolbar{min-height:80px;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 18px;border-bottom:1px solid rgba(36,55,70,.09);background:rgba(255,253,248,.78);backdrop-filter:blur(18px);z-index:50}.brand{display:flex;align-items:center;gap:12px;min-width:0}.brand-icon{width:46px;height:46px;border-radius:17px;background:linear-gradient(135deg,var(--cyan),var(--gold));display:grid;place-items:center;color:white;font-weight:bold;box-shadow:0 14px 30px rgba(8,166,189,.23)}.brand h2{font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.brand small{display:block;color:var(--text-soft);font-weight:bold;margin-top:2px}.toolbar-metrics{display:flex;align-items:center;justify-content:flex-end;gap:10px;flex-wrap:wrap}.metric{background:rgba(255,255,255,.72);border:1px solid rgba(36,55,70,.08);border-radius:17px;padding:8px 11px;min-width:82px;box-shadow:0 9px 24px rgba(36,55,70,.06)}.metric span{display:block;font-size:11px;color:var(--text-soft);font-weight:bold;text-transform:uppercase;letter-spacing:.06em}.metric strong{font-size:16px;color:var(--ink)}
+    .workspace{position:relative;flex:1;overflow:hidden}.main-view{height:100%;overflow:auto;padding:22px}.layout{display:grid;grid-template-columns:300px 1fr 320px;gap:18px;align-items:start;min-height:calc(100vh - 124px)}.nav-card,.side-card,.mission-card,.final-card,.results-card{padding:18px}.nav-card{position:sticky;top:0}.mission-card,.final-card,.results-card{position:relative;overflow:hidden}.mission-card>*{position:relative;z-index:1}
+    .module-list{display:flex;flex-direction:column;gap:9px;margin-top:12px}.module-pill{border:1px solid rgba(36,55,70,.08);border-radius:19px;padding:11px;background:rgba(255,255,255,.54);display:flex;gap:10px;align-items:center;transition:.2s ease}.module-pill:hover{transform:translateX(2px)}.module-dot{width:34px;height:34px;border-radius:14px;display:grid;place-items:center;font-weight:bold;background:linear-gradient(135deg,#edf3f5,#fff);color:var(--text-soft);flex:none}.module-pill.active{border-color:rgba(8,166,189,.35);background:rgba(8,166,189,.08)}.module-pill.done .module-dot{background:linear-gradient(135deg,var(--success),var(--green));color:white}.module-pill.fail .module-dot{background:linear-gradient(135deg,var(--warning),var(--gold));color:white}.module-pill.active .module-dot{background:linear-gradient(135deg,var(--cyan),var(--blue));color:white}.module-pill strong{display:block;color:var(--ink)}.module-pill small{display:block;color:var(--text-soft);line-height:1.25;margin-top:2px}.progress{height:10px;background:rgba(36,55,70,.08);border-radius:999px;overflow:hidden;margin-top:14px}.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--cyan),var(--green),var(--gold),var(--coral));border-radius:inherit;transition:width .35s ease}
+    .mission-header{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;margin-bottom:16px}.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;background:rgba(8,166,189,.10);color:var(--accent-dark);border:1px solid rgba(8,166,189,.22);padding:7px 10px;font-weight:bold;font-size:12px;text-transform:uppercase;letter-spacing:.05em}.module-title{font-size:32px;letter-spacing:-.028em;margin:7px 0 6px}.visual{border-radius:26px;background:rgba(255,255,255,.50);padding:16px;margin:14px 0;box-shadow:inset 0 1px 0 rgba(255,255,255,.65),0 10px 24px rgba(36,55,70,.06);border:1px solid rgba(255,255,255,.70)}.visual.dark{background:linear-gradient(145deg,#172533,#243746);color:white;border-color:rgba(255,255,255,.10)}.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.card-mini{border:1px solid rgba(36,55,70,.08);background:rgba(255,255,255,.62);border-radius:20px;padding:13px;box-shadow:0 8px 20px rgba(36,55,70,.04)}.card-mini strong{color:var(--ink)}
+    .station-shell{border-radius:28px;min-height:305px;padding:18px;position:relative;overflow:hidden;background:linear-gradient(145deg,rgba(255,255,255,.82),rgba(255,255,255,.45));}.station-shell:after{content:"";position:absolute;inset:auto -50px -70px auto;width:210px;height:210px;background:radial-gradient(circle,rgba(8,166,189,.13),transparent 68%);pointer-events:none}.station-title{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}.station-title h3{font-size:20px}.station-caption{font-size:13px;color:var(--text-soft);font-weight:bold;text-transform:uppercase;letter-spacing:.06em}
+    .lab-controls{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px}.select-card{background:rgba(255,255,255,.70);border-radius:19px;padding:12px;border:1px solid rgba(36,55,70,.08);box-shadow:0 8px 18px rgba(36,55,70,.04)}.select-card label{display:block;font-size:12px;font-weight:bold;text-transform:uppercase;letter-spacing:.06em;color:var(--text-soft);margin-bottom:7px}.select-card select{width:100%;border:0;outline:0;background:white;border-radius:13px;padding:10px;color:var(--ink);font-weight:bold;box-shadow:inset 0 0 0 1px rgba(36,55,70,.09)}
+    .bit-row{display:flex;align-items:center;gap:7px;margin:7px 0}.bit-row strong{width:28px}.bit{width:42px;height:42px;border-radius:14px;border:0;background:#edf2f5;color:#6b7c8b;font-weight:bold;box-shadow:inset 0 2px 3px rgba(0,0,0,.06)}.bit.on{background:linear-gradient(135deg,var(--blue),#174e9b);color:white;box-shadow:0 0 18px rgba(47,118,210,.35)}.led-row{display:flex;gap:7px;justify-content:center}.led{width:46px;height:46px;border-radius:50%;display:grid;place-items:center;background:#dbe3e7;color:#627584;font-weight:bold;box-shadow:inset 0 2px 6px rgba(0,0,0,.18)}.led.on{background:radial-gradient(circle,var(--green),#176d4c);color:white;box-shadow:0 0 20px rgba(95,197,155,.55)}
+    .alu-stage{display:grid;grid-template-columns:1fr 1.05fr 1fr;align-items:center;gap:18px}.reg-panel{background:rgba(255,255,255,.72);border-radius:22px;padding:14px;box-shadow:var(--shadow-soft)}.alu-body{height:190px;min-width:220px;clip-path:polygon(0 0,35% 0,50% 23%,65% 0,100% 0,82% 100%,18% 100%);background:linear-gradient(180deg,#203449,#0f172a);display:grid;place-items:center;color:white;font-size:42px;font-weight:bold;letter-spacing:.14em;text-shadow:0 2px 12px rgba(255,255,255,.25);position:relative}.alu-body:after{content:"Opcode";position:absolute;bottom:20px;font-size:12px;letter-spacing:.25em;color:rgba(255,255,255,.38)}.op-chip{display:inline-flex;margin:4px;padding:6px 10px;border-radius:999px;background:rgba(242,177,52,.18);color:#7a5006;font-weight:bold;font-size:12px}
+    .fpga-fabric{background:linear-gradient(145deg,#f8fbff,#eef7ff);background-image:linear-gradient(rgba(47,118,210,.11) 1px,transparent 1px),linear-gradient(90deg,rgba(47,118,210,.11) 1px,transparent 1px);background-size:22px 22px}.fabric-row{display:grid;grid-template-columns:1fr 74px 1fr 1fr 1fr;gap:13px;align-items:center}.block{border-radius:22px;background:rgba(255,255,255,.84);border:1px solid rgba(36,55,70,.10);padding:14px;text-align:center;font-weight:bold;box-shadow:var(--shadow-soft)}.block.active{background:linear-gradient(135deg,rgba(8,166,189,.16),rgba(95,197,155,.12));border-color:rgba(8,166,189,.24)}.block.purple{background:linear-gradient(135deg,rgba(114,87,214,.16),rgba(47,118,210,.10));}.wire{height:6px;border-radius:999px;background:linear-gradient(90deg,var(--cyan),var(--blue));position:relative;overflow:hidden}.wire:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.75) 0 14px,transparent 14px 28px);animation:flow 1s linear infinite}@keyframes flow{to{transform:translateX(28px)}}
+    .bus-board{background:#0f172a;color:white;border:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.10),var(--shadow);background-image:radial-gradient(#1e293b 1px,transparent 1px);background-size:20px 20px}.bus-stage{display:grid;grid-template-columns:170px 1fr 170px;gap:18px;align-items:center}.bus-stack{display:flex;flex-direction:column;gap:18px}.bus-line{height:18px;border-radius:999px;position:relative;overflow:hidden;opacity:.95}.bus-line span{position:absolute;left:16px;top:-1px;color:white;font-size:11px;font-weight:bold;letter-spacing:.1em;text-transform:uppercase}.bus-address{background:#d58a17}.bus-data{background:#2f76d2}.bus-control{background:#c84f47}.bus-line.active:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.72) 0 14px,transparent 14px 28px);animation:flow .9s linear infinite}.chip-node{border-radius:24px;background:linear-gradient(160deg,rgba(255,255,255,.16),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.17);padding:18px;text-align:center;color:white;box-shadow:0 16px 36px rgba(0,0,0,.20)}.chip-node strong{font-size:20px;color:white}.chip-node small{color:rgba(255,255,255,.70)}
+    .io-stage,.dma-stage{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;align-items:stretch}.device-card{position:relative;border-radius:24px;padding:18px;text-align:center;min-height:170px;background:rgba(255,255,255,.72);box-shadow:var(--shadow-soft);overflow:hidden}.device-card:after{content:"";position:absolute;inset:auto -30px -45px auto;width:120px;height:120px;border-radius:50%;background:rgba(8,166,189,.10)}.device-icon{font-size:38px;margin-bottom:8px}.register-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}.register{border-radius:13px;background:white;padding:8px;font-size:12px;font-weight:bold;color:var(--text-soft)}.dma-arrow{height:10px;border-radius:999px;background:linear-gradient(90deg,var(--green),var(--cyan),var(--blue));margin:18px 0;position:relative;overflow:hidden}.dma-arrow:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.8) 0 12px,transparent 12px 24px);animation:flow .75s linear infinite}
+    .protocol-link{height:230px;border-radius:26px;background:linear-gradient(90deg,#fff,#fdf4ff,#fff);position:relative;display:flex;align-items:center;justify-content:space-between;padding:24px;overflow:hidden}.protocol-link:before{content:"";position:absolute;left:140px;right:140px;top:50%;height:8px;border-radius:999px;background:linear-gradient(90deg,var(--rose),var(--purple),var(--cyan));opacity:.42}.node{width:145px;min-height:125px;border-radius:24px;background:white;border:1px solid rgba(36,55,70,.10);display:grid;place-items:center;text-align:center;font-weight:bold;box-shadow:var(--shadow-soft);z-index:2}.packet{position:absolute;width:18px;height:18px;border-radius:50%;background:var(--rose);box-shadow:0 0 18px rgba(232,95,140,.78);left:175px;top:106px;animation:packet 2.2s ease-in-out infinite}.packet.two{background:var(--cyan);animation-delay:-1.1s}@keyframes packet{0%{left:175px}50%{left:calc(100% - 193px)}100%{left:175px}}
+    .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mission-option{border:1px solid rgba(36,55,70,.09);border-radius:17px;background:rgba(255,255,255,.66);padding:12px;display:flex;gap:10px;align-items:flex-start;transition:.17s}.mission-option:hover{transform:translateY(-1px);box-shadow:0 12px 25px rgba(36,55,70,.08)}.mission-option input{margin-top:4px;accent-color:var(--accent)}.mission-option.correct{background:rgba(35,143,99,.12);border-color:rgba(35,143,99,.32)}.mission-option.wrong{background:rgba(200,79,71,.12);border-color:rgba(200,79,71,.32)}
+    .question{border:1px solid rgba(36,55,70,.07);border-radius:24px;background:rgba(255,255,255,.62);padding:17px;margin:0 0 13px;transition:.22s ease;box-shadow:0 8px 22px rgba(36,55,70,.04)}.question:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(36,55,70,.07)}.question h4{margin:0;color:var(--ink);font-size:17px;line-height:1.35}.question-head{display:flex;gap:12px;justify-content:space-between;align-items:flex-start;margin-bottom:10px}.q-status{border-radius:999px;padding:5px 9px;font-size:11px;font-weight:bold;text-transform:uppercase;letter-spacing:.06em;background:#edf3f5;color:var(--text-soft);white-space:nowrap}.question.answered .q-status{background:rgba(8,166,189,.12);color:var(--accent-dark)}.question.correct{border-color:rgba(35,143,99,.34);background:linear-gradient(135deg,rgba(35,143,99,.10),rgba(255,255,255,.72))}.question.correct .q-status{background:var(--success);color:white}.question.incorrect{border-color:rgba(200,79,71,.34);background:linear-gradient(135deg,rgba(200,79,71,.10),rgba(255,255,255,.72))}.question.incorrect .q-status{background:var(--danger);color:white}.options{display:grid;grid-template-columns:1fr 1fr;gap:8px}.option{border:1px solid rgba(36,55,70,.10);border-radius:16px;padding:10px;background:rgba(255,255,255,.78);display:flex;gap:9px;align-items:flex-start;transition:.15s}.option:hover{border-color:rgba(8,166,189,.26);transform:translateY(-1px)}.option input{margin-top:4px;accent-color:var(--accent)}.option.selected{border-color:rgba(8,166,189,.44);background:rgba(8,166,189,.10);box-shadow:0 8px 20px rgba(8,166,189,.08)}.option.is-correct{border-color:rgba(35,143,99,.45);background:rgba(35,143,99,.13)}.option.is-wrong{border-color:rgba(200,79,71,.46);background:rgba(200,79,71,.13)}.locked-options{filter:blur(2px);pointer-events:none;user-select:none;opacity:.56;transition:.18s}.locked-options.revealed{filter:none;pointer-events:auto;opacity:1}.hold-btn{margin-bottom:10px}.q-feedback{margin-top:10px;border-radius:16px;padding:10px 12px;font-size:14px}.q-feedback.ok{background:rgba(35,143,99,.12);border:1px solid rgba(35,143,99,.25)}.q-feedback.bad{background:rgba(200,79,71,.10);border:1px solid rgba(200,79,71,.23)}
+    .final-card{max-width:1060px;margin:0 auto}.result-ring{width:190px;height:190px;border-radius:50%;display:grid;place-items:center;margin:auto;background:conic-gradient(var(--success) var(--score-deg),#e8ecef 0);box-shadow:var(--shadow)}.result-ring-inner{width:145px;height:145px;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center;border:1px solid rgba(36,55,70,.08)}.result-ring strong{font-size:38px;color:var(--ink)}.certificate-preview{border:8px double rgba(8,166,189,.35);background:#fffdf8;border-radius:24px;padding:30px;text-align:center}.certificate-preview h2{font-size:39px;margin:6px 0;color:var(--ink)}
+    .camera-box{border-radius:22px;overflow:hidden;border:1px solid rgba(36,55,70,.09);background:#101820;color:white;position:relative;min-height:185px;display:grid;place-items:center;box-shadow:var(--shadow-soft)}#cameraVideo{width:100%;height:185px;object-fit:cover;display:block}.camera-stamp{position:absolute;left:8px;bottom:8px;background:rgba(0,0,0,.55);color:white;border-radius:999px;padding:5px 8px;font-size:12px;font-weight:bold}.security-log{max-height:220px;overflow:auto;display:flex;flex-direction:column;gap:7px;margin-top:12px}.log-item{font-size:12px;background:rgba(255,255,255,.62);border:1px solid rgba(36,55,70,.08);border-radius:13px;padding:8px}.supervision-steps{display:flex;flex-direction:column;gap:8px;margin-top:12px}.supervision-step{display:flex;align-items:center;gap:9px;background:rgba(255,255,255,.56);border-radius:15px;padding:9px;border:1px solid rgba(36,55,70,.07)}.supervision-step i{width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--cyan),var(--green));color:white;font-style:normal;font-weight:bold;font-size:13px}
+    .overlay{position:fixed;inset:0;background:rgba(20,37,54,.76);backdrop-filter:blur(10px);z-index:1100;display:grid;place-items:center;padding:22px}.modal{width:min(560px,100%);padding:24px}.footer-actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-top:14px}.toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:1200;background:#142536;color:white;padding:11px 14px;border-radius:999px;box-shadow:var(--shadow-soft);font-weight:bold;max-width:90vw;text-align:center}
+    @media (max-width:1180px){.layout{grid-template-columns:290px 1fr}.side-card{grid-column:1/-1}.hero-grid{grid-template-columns:1fr}.hero{min-height:auto}.lab-controls{grid-template-columns:1fr 1fr}.fabric-row{grid-template-columns:1fr}.options{grid-template-columns:1fr}.match-grid{grid-template-columns:1fr}.alu-stage,.bus-stage,.io-stage,.dma-stage{grid-template-columns:1fr}.bus-stack{gap:10px}.bus-stage{gap:12px}}
+    @media (max-width:820px){body{overflow:auto}.toolbar{height:auto;align-items:flex-start;flex-direction:column}.toolbar-status{justify-content:flex-start}.workspace{overflow:visible}.main-view{height:auto}.layout{grid-template-columns:1fr}.nav-card{position:relative}.screen{position:relative;min-height:100vh}.lab-controls{grid-template-columns:1fr}.grid-2,.grid-3{grid-template-columns:1fr}.author-badge{position:static;border-radius:0;text-align:center}.module-title{font-size:25px}.hero{padding:24px}.protocol-link{padding:16px}.node{width:118px}.packet{display:none}}
+  </style>
+</head>
+<body>
+  <div class="author-badge">Soporte técnico: Aslin Gonzalo Botello Plata</div>
+  <div id="app"></div>
+  <div id="toast" class="toast hidden"></div>
+  <script>
+(function(){
+  'use strict';
+  const APP_VERSION = 'fortaleza-u2-u3-estetico-v5.0';
+  const STATE_KEY = 'fortaleza-arquitectura-u2-u3-state-v40-estetico';
+  const DB_NAME = 'fortaleza-u2-u3-camera-v4';
+  const PASSING_SCORE = 70;
+  const EXAM_MINUTES = 90;
+  const TOTAL_MS = EXAM_MINUTES * 60 * 1000;
+  const CAPTURE_INTERVAL_MS = 15 * 60 * 1000;
+  const app = document.getElementById('app');
+  const toastNode = document.getElementById('toast');
+
+  const moduleData = {
+    key:'arquitectura-computador-u2-u3',
+    title:'Fortaleza Binaria: ALU, buses, E/S y comunicación',
+    author:'Aslin Gonzalo Botello Plata',
+    institution:'Universidad de La Guajira'
+  };
+
+  const units = [
+    {id:'u21', label:'U2.1', title:'Unidad Aritmético-Lógica', short:'Suma, resta y lógica binaria', icon:'ALU', type:'alu', weight:5,
+      objective:'Configurar entradas, operación y salida de una ALU de 4 bits para demostrar dominio de suma, resta, AND, OR, XOR y NOT.',
+      target:{a:9,b:6,op:'XOR',result:15,bin:'1111'},
+      facts:['La ALU ejecuta operaciones aritméticas y lógicas sobre registros internos.','Las banderas Carry y Zero describen condiciones del resultado.','XOR es útil para inversión selectiva, comparación bit a bit y operaciones de control.']},
+    {id:'u22', label:'U2.2', title:'ALU sintetizada en FPGA', short:'LUT, MUX, opcode y routing', icon:'FPGA', type:'fpga', weight:5,
+      objective:'Interpretar cómo una ALU puede implementarse en hardware programable usando LUTs, multiplexores y señales de selección.',
+      target:{lut:'XOR',opcode:'1',route:'MUX'},
+      facts:['Una FPGA no trae una ALU fija: la lógica se sintetiza mediante bloques configurables.','Una LUT implementa una tabla de verdad.','El MUX selecciona la salida activa según el opcode.']},
+    {id:'u23', label:'U2.3', title:'Relación procesador–memoria', short:'Buses de dirección, datos y control', icon:'BUS', type:'bus', weight:5,
+      objective:'Reconocer el papel de los buses y registros MAR/MBR en operaciones de lectura y escritura entre CPU y memoria.',
+      target:{operation:'READ',address:'0x2A',data:'3C',bus:'Datos RAM→CPU'},
+      facts:['El bus de direcciones suele ir del CPU hacia memoria.','El bus de datos es bidireccional.','El bus de control indica lectura, escritura y sincronización.']},
+    {id:'u31', label:'U3.1', title:'Arquitectura de Entrada/Salida', short:'Direcciones, controladores y señales', icon:'E/S', type:'io', weight:5,
+      objective:'Diferenciar espacio de direcciones, registros de E/S, controladores, señales IOR/IOW y línea de interrupción.',
+      target:{address:'0xA0',signal:'IOR',register:'DATA IN'},
+      facts:['Un controlador de periféricos expone registros como STATUS, CONTROL, DATA IN y DATA OUT.','IOR se usa para leer desde un puerto o registro de E/S.','IOW se usa para escribir hacia un puerto o registro de E/S.']},
+    {id:'u32', label:'U3.2', title:'Polling, interrupciones y DMA', short:'Transferencia eficiente de datos', icon:'DMA', type:'dma', weight:5,
+      objective:'Comparar sondeo, interrupciones y acceso directo a memoria según carga de CPU, volumen de datos y eficiencia.',
+      target:{scenario:'bloque grande disco a RAM',technique:'DMA',cpu:'baja'},
+      facts:['Polling consume CPU porque consulta repetidamente el estado del dispositivo.','Las interrupciones avisan al CPU cuando el periférico requiere atención.','DMA transfiere bloques entre periférico y memoria con menor intervención del CPU.']},
+    {id:'u33', label:'U3.3', title:'Protocolos de comunicación', short:'Serial, paralelo, duplex y buses', icon:'PROTO', type:'protocol', weight:5,
+      objective:'Configurar una comunicación según modo de envío, direccionalidad y protocolo apropiado para sistemas computacionales.',
+      target:{mode:'Serial',duplex:'Full-Duplex',protocol:'UART'},
+      facts:['La transmisión serial envía bits de forma secuencial por pocas líneas.','Full-duplex permite comunicación simultánea en ambos sentidos.','UART, SPI e I²C son protocolos frecuentes en microcontroladores.']}
+  ];
+
+  const missions = [
+    {id:'m1', title:'Astillero de Operaciones', topic:'ALU', prompt:'Un microcontrolador necesita cargar el literal 0x3C y luego guardarlo en un registro de propósito general. Seleccione la secuencia correcta.', answer:'MOVLW 0x3C → MOVWF REG', options:['MOVLW 0x3C → MOVWF REG','MOVWF 0x3C → MOVLW REG','BTFSS REG,0 → MOVLW 0x3C','ADDWF REG,F → MOVWF 0x3C']},
+    {id:'m2', title:'Tejido Reconfigurable', topic:'FPGA', prompt:'Para implementar A XOR B en una FPGA, el bloque más directo para representar la tabla de verdad es:', answer:'LUT', options:['LUT','Registro MAR','Bus de control','Controlador DMA']},
+    {id:'m3', title:'Ruta Procesador–Memoria', topic:'Buses', prompt:'Durante una lectura de memoria, ¿cuál flujo es correcto?', answer:'Dirección CPU→RAM, control READ CPU→RAM, dato RAM→CPU', options:['Dirección CPU→RAM, control READ CPU→RAM, dato RAM→CPU','Dato CPU→RAM, dirección RAM→CPU, control RAM→CPU','Dirección E/S→CPU, dato CPU→E/S, control DMA→RAM','Control CPU→UART, dato FPGA→MAR, dirección MBR→RAM']},
+    {id:'m4', title:'Mesa de Control de E/S', topic:'Entrada/Salida', prompt:'Si el CPU debe leer el dato del teclado ubicado en 0xA0, la combinación coherente es:', answer:'Dirección 0xA0 con señal IOR', options:['Dirección 0xA0 con señal IOR','Dirección 0xB0 con señal MEMW','Dirección 0x2A con señal IOW','Dirección 0xA0 con señal MEMR']},
+    {id:'m5', title:'Dictamen de Transferencia', topic:'DMA/Protocolos', prompt:'Para mover un bloque grande desde disco hacia RAM con mínima carga de CPU, la decisión arquitectónica más pertinente es:', answer:'Usar DMA como bus master temporal', options:['Usar DMA como bus master temporal','Usar polling permanente del registro STATUS','Usar NOT sobre el bus de datos','Usar simplex para leer y escribir al mismo tiempo']}
+  ];
+
+  const examQuestions = [
+    {
+        "q": "En una ALU de 4 bits, la operación XOR entre 1001 y 0110 produce:",
+        "a": "1111",
+        "o": [
+            "0000",
+            "1111",
+            "1000",
+            "0111"
+        ]
+    },
+    {
+        "q": "La bandera Zero se activa cuando:",
+        "a": "El resultado de la operación es 0",
+        "o": [
+            "Existe acarreo",
+            "El resultado de la operación es 0",
+            "El opcode vale 1",
+            "La memoria está llena"
+        ]
+    },
+    {
+        "q": "En una ALU, la operación AND entre 1100 y 1010 produce:",
+        "a": "1000",
+        "o": [
+            "1110",
+            "0110",
+            "1000",
+            "0100"
+        ]
+    },
+    {
+        "q": "En una ALU, la operación OR entre 0101 y 0011 produce:",
+        "a": "0111",
+        "o": [
+            "0001",
+            "0111",
+            "0010",
+            "1100"
+        ]
+    },
+    {
+        "q": "La operación NOT aplicada a 1010 en 4 bits produce:",
+        "a": "0101",
+        "o": [
+            "1111",
+            "0101",
+            "1011",
+            "0011"
+        ]
+    },
+    {
+        "q": "En una suma binaria de 4 bits, Carry indica:",
+        "a": "Que hubo acarreo fuera del bit más significativo",
+        "o": [
+            "Que el resultado es cero",
+            "Que hubo acarreo fuera del bit más significativo",
+            "Que el bus está libre",
+            "Que se activó una interrupción"
+        ]
+    },
+    {
+        "q": "En una FPGA, una LUT se usa principalmente para:",
+        "a": "Implementar tablas de verdad",
+        "o": [
+            "Almacenar programas en disco",
+            "Implementar tablas de verdad",
+            "Controlar ventiladores",
+            "Reemplazar el reloj"
+        ]
+    },
+    {
+        "q": "El MUX dentro de una ALU sintetizada permite:",
+        "a": "Seleccionar una salida entre varias operaciones",
+        "o": [
+            "Aumentar la memoria RAM",
+            "Seleccionar una salida entre varias operaciones",
+            "Eliminar el bus de control",
+            "Crear interrupciones externas"
+        ]
+    },
+    {
+        "q": "En diseño con FPGA, el routing corresponde a:",
+        "a": "La interconexión programable entre bloques lógicos",
+        "o": [
+            "La interconexión programable entre bloques lógicos",
+            "La memoria externa del computador",
+            "El ventilador del procesador",
+            "La instrucción para cargar W"
+        ]
+    },
+    {
+        "q": "Un opcode en una ALU se utiliza para:",
+        "a": "Seleccionar la operación que ejecutará la unidad",
+        "o": [
+            "Seleccionar la operación que ejecutará la unidad",
+            "Guardar una fotografía",
+            "Definir el tamaño del monitor",
+            "Desactivar el bus de datos"
+        ]
+    },
+    {
+        "q": "El registro MAR contiene normalmente:",
+        "a": "La dirección de memoria a acceder",
+        "o": [
+            "El dato final leído",
+            "La dirección de memoria a acceder",
+            "El código de interrupción",
+            "La bandera Carry"
+        ]
+    },
+    {
+        "q": "El registro MBR/MDR se asocia con:",
+        "a": "Datos que entran o salen de memoria",
+        "o": [
+            "Direcciones de puertos únicamente",
+            "Datos que entran o salen de memoria",
+            "Señales de reloj",
+            "Mapas de protocolos"
+        ]
+    },
+    {
+        "q": "El bus de direcciones suele ser:",
+        "a": "Unidireccional desde CPU hacia memoria/E/S",
+        "o": [
+            "Bidireccional siempre",
+            "Unidireccional desde CPU hacia memoria/E/S",
+            "Exclusivo del DMA",
+            "Igual al bus de control"
+        ]
+    },
+    {
+        "q": "El bus de datos es importante porque:",
+        "a": "Transporta los valores leídos o escritos",
+        "o": [
+            "Solo marca interrupciones",
+            "Transporta los valores leídos o escritos",
+            "Contiene el opcode fijo",
+            "Sustituye al controlador"
+        ]
+    },
+    {
+        "q": "El bus de control transporta principalmente:",
+        "a": "Señales como lectura, escritura y habilitación",
+        "o": [
+            "Solo datos del usuario",
+            "Señales como lectura, escritura y habilitación",
+            "Direcciones físicas únicamente",
+            "Fotografías del estudiante"
+        ]
+    },
+    {
+        "q": "Durante una lectura de memoria, el dato viaja:",
+        "a": "Desde la memoria hacia el CPU",
+        "o": [
+            "Desde la memoria hacia el CPU",
+            "Desde el CPU hacia la memoria",
+            "Desde el teclado hacia el display siempre",
+            "Desde la ALU hacia el MUX solamente"
+        ]
+    },
+    {
+        "q": "Durante una escritura en memoria, el dato viaja:",
+        "a": "Desde el CPU hacia la memoria",
+        "o": [
+            "Desde el CPU hacia la memoria",
+            "Desde la memoria hacia el CPU",
+            "Desde el DMA hacia el monitor únicamente",
+            "Desde el bus de control al MAR"
+        ]
+    },
+    {
+        "q": "En E/S aislada, la señal IOR indica:",
+        "a": "Lectura desde un puerto o registro de E/S",
+        "o": [
+            "Escritura en memoria principal",
+            "Lectura desde un puerto o registro de E/S",
+            "Reset de la ALU",
+            "Carga de literal en W"
+        ]
+    },
+    {
+        "q": "La señal IOW se usa para:",
+        "a": "Escribir hacia un dispositivo o registro de E/S",
+        "o": [
+            "Leer desde RAM",
+            "Escribir hacia un dispositivo o registro de E/S",
+            "Activar XOR",
+            "Transferir por DMA únicamente"
+        ]
+    },
+    {
+        "q": "Un registro STATUS en un controlador de E/S normalmente permite:",
+        "a": "Consultar si el periférico está listo o si ocurrió un evento",
+        "o": [
+            "Consultar si el periférico está listo o si ocurrió un evento",
+            "Guardar el certificado final",
+            "Reemplazar al bus de direcciones",
+            "Calcular una suma binaria"
+        ]
+    },
+    {
+        "q": "DATA IN en un controlador de periféricos se interpreta como:",
+        "a": "Registro donde el CPU lee datos provenientes del periférico",
+        "o": [
+            "Registro donde el CPU lee datos provenientes del periférico",
+            "Registro para elegir el color del fondo",
+            "Bit de carry de la ALU",
+            "Señal para borrar la memoria"
+        ]
+    },
+    {
+        "q": "DATA OUT en un controlador de periféricos se interpreta como:",
+        "a": "Registro donde el CPU escribe datos hacia el periférico",
+        "o": [
+            "Registro donde el CPU escribe datos hacia el periférico",
+            "Registro de dirección de memoria",
+            "Cable de alimentación",
+            "Bandera de cero"
+        ]
+    },
+    {
+        "q": "Polling significa que el CPU:",
+        "a": "Consulta repetidamente el estado del periférico",
+        "o": [
+            "Entrega el bus al controlador DMA",
+            "Consulta repetidamente el estado del periférico",
+            "Ejecuta una LUT",
+            "Convierte paralelo a serial"
+        ]
+    },
+    {
+        "q": "Una interrupción permite que:",
+        "a": "El periférico solicite atención del CPU cuando ocurre un evento",
+        "o": [
+            "El CPU consulte eternamente un registro",
+            "El periférico solicite atención del CPU cuando ocurre un evento",
+            "La ALU ejecute NOT",
+            "El bus de direcciones sea bidireccional"
+        ]
+    },
+    {
+        "q": "DMA significa:",
+        "a": "Acceso directo a memoria",
+        "o": [
+            "Dirección múltiple analógica",
+            "Acceso directo a memoria",
+            "Dato mínimo aritmético",
+            "Decodificador de memoria activa"
+        ]
+    },
+    {
+        "q": "La principal ventaja del DMA en bloques grandes es:",
+        "a": "Reduce la intervención del CPU",
+        "o": [
+            "Elimina la RAM",
+            "Reduce la intervención del CPU",
+            "Evita todo control de bus",
+            "Convierte instrucciones en datos"
+        ]
+    },
+    {
+        "q": "Cuando un controlador DMA actúa como bus master temporal:",
+        "a": "Puede dirigir la transferencia de datos sin que el CPU copie cada byte",
+        "o": [
+            "Puede dirigir la transferencia de datos sin que el CPU copie cada byte",
+            "Desactiva permanentemente la memoria RAM",
+            "Convierte el bus de control en teclado",
+            "Impide cualquier interrupción del sistema"
+        ]
+    },
+    {
+        "q": "Polling suele ser menos eficiente que interrupciones cuando:",
+        "a": "El CPU pierde tiempo consultando un dispositivo que aún no está listo",
+        "o": [
+            "El CPU pierde tiempo consultando un dispositivo que aún no está listo",
+            "La ALU ejecuta XOR",
+            "El protocolo es full-duplex",
+            "La memoria no tiene direcciones"
+        ]
+    },
+    {
+        "q": "La comunicación serial transmite:",
+        "a": "Bits secuenciales por pocas líneas",
+        "o": [
+            "Todos los bits por muchas líneas simultáneas",
+            "Bits secuenciales por pocas líneas",
+            "Solo direcciones de memoria",
+            "Únicamente señales de reset"
+        ]
+    },
+    {
+        "q": "La comunicación paralela se caracteriza por:",
+        "a": "Enviar varios bits simultáneamente por varias líneas",
+        "o": [
+            "Enviar varios bits simultáneamente por varias líneas",
+            "Enviar siempre un solo bit",
+            "No requerir sincronización",
+            "Ser igual a DMA"
+        ]
+    },
+    {
+        "q": "Full-duplex permite:",
+        "a": "Transmitir y recibir simultáneamente",
+        "o": [
+            "Transmitir en un solo sentido",
+            "Transmitir y recibir simultáneamente",
+            "Transmitir solo si el canal está libre en un sentido",
+            "Eliminar protocolos"
+        ]
+    },
+    {
+        "q": "Half-duplex permite:",
+        "a": "Comunicación en ambos sentidos, pero no simultánea",
+        "o": [
+            "Un solo sentido permanente",
+            "Comunicación en ambos sentidos, pero no simultánea",
+            "Simultaneidad obligatoria",
+            "Transferencia directa a memoria"
+        ]
+    },
+    {
+        "q": "Simplex significa:",
+        "a": "Comunicación en un solo sentido",
+        "o": [
+            "Comunicación simultánea en dos sentidos",
+            "Comunicación en un solo sentido",
+            "Transferencia directa a memoria",
+            "Lectura de registro STATUS"
+        ]
+    },
+    {
+        "q": "UART es frecuente en microcontroladores para:",
+        "a": "Comunicación serial asíncrona",
+        "o": [
+            "Comunicación serial asíncrona",
+            "Síntesis de LUTs",
+            "Sumas en coma flotante",
+            "Control exclusivo de memoria caché"
+        ]
+    },
+    {
+        "q": "SPI se caracteriza comúnmente por:",
+        "a": "Usar líneas separadas como reloj, MOSI, MISO y selección de chip",
+        "o": [
+            "Usar líneas separadas como reloj, MOSI, MISO y selección de chip",
+            "Transmitir sin reloj ni control",
+            "Ser idéntico a polling",
+            "Reemplazar el registro W"
+        ]
+    },
+    {
+        "q": "I²C se caracteriza por:",
+        "a": "Usar líneas compartidas SDA y SCL con direccionamiento de dispositivos",
+        "o": [
+            "Usar líneas compartidas SDA y SCL con direccionamiento de dispositivos",
+            "Usar únicamente 16 líneas de datos paralelas",
+            "Ser una instrucción de salto",
+            "Eliminar la necesidad de controladores"
+        ]
+    },
+    {
+        "q": "En microcontroladores PIC, MOVLW k realiza:",
+        "a": "Carga el literal k en el registro W",
+        "o": [
+            "Carga el literal k en el registro W",
+            "Mueve W hacia un puerto",
+            "Suma W con memoria",
+            "Salta si el bit está en 1"
+        ]
+    },
+    {
+        "q": "MOVWF f realiza:",
+        "a": "Copia el contenido de W en el registro f",
+        "o": [
+            "Copia el contenido de W en el registro f",
+            "Carga un literal en W",
+            "Borra el programa",
+            "Activa el DMA"
+        ]
+    },
+    {
+        "q": "ADDWF f,d realiza:",
+        "a": "Suma W con f y guarda según el destino d",
+        "o": [
+            "Suma W con f y guarda según el destino d",
+            "Carga un literal en W",
+            "Salta si el bit está limpio",
+            "Lee un puerto IOR"
+        ]
+    },
+    {
+        "q": "BTFSS f,b significa:",
+        "a": "Prueba el bit b de f y salta si está en 1",
+        "o": [
+            "Prueba el bit b de f y salta si está en 1",
+            "Copia W en f",
+            "Resta sin acarreo",
+            "Configura un protocolo UART"
+        ]
+    },
+    {
+        "q": "BTFSC f,b significa:",
+        "a": "Prueba el bit b de f y salta si está en 0",
+        "o": [
+            "Prueba el bit b de f y salta si está en 0",
+            "Suma W con f",
+            "Mueve literal a W",
+            "Cambia serial a paralelo"
+        ]
+    },
+    {
+        "q": "BSF f,b se usa para:",
+        "a": "Poner en 1 un bit específico de un registro",
+        "o": [
+            "Poner en 1 un bit específico de un registro",
+            "Borrar todo el bus",
+            "Saltar si hay DMA",
+            "Cargar un opcode MUX"
+        ]
+    },
+    {
+        "q": "BCF f,b se usa para:",
+        "a": "Poner en 0 un bit específico de un registro",
+        "o": [
+            "Poner en 0 un bit específico de un registro",
+            "Cargar W con un literal",
+            "Enviar paquetes full-duplex",
+            "Activar una LUT XOR"
+        ]
+    },
+    {
+        "q": "DECFSZ f,d realiza:",
+        "a": "Decrementa f y salta la siguiente instrucción si queda en cero",
+        "o": [
+            "Incrementa f siempre",
+            "Decrementa f y salta la siguiente instrucción si queda en cero",
+            "Carga 0xFF en W",
+            "Escribe en el puerto IOW"
+        ]
+    },
+    {
+        "q": "GOTO etiqueta se utiliza para:",
+        "a": "Realizar un salto incondicional dentro del programa",
+        "o": [
+            "Realizar un salto incondicional dentro del programa",
+            "Copiar W en memoria",
+            "Leer el bus de datos",
+            "Configurar I²C automáticamente"
+        ]
+    },
+    {
+        "q": "CALL subrutina se utiliza para:",
+        "a": "Invocar una subrutina conservando la posibilidad de retorno",
+        "o": [
+            "Invocar una subrutina conservando la posibilidad de retorno",
+            "Activar el bus de direcciones",
+            "Borrar el registro STATUS",
+            "Convertir serial a paralelo"
+        ]
+    },
+    {
+        "q": "RETURN en ensamblador se asocia con:",
+        "a": "Volver desde una subrutina al flujo principal",
+        "o": [
+            "Volver desde una subrutina al flujo principal",
+            "Cargar literal en W",
+            "Transferir datos por DMA",
+            "Probar un bit y saltar"
+        ]
+    },
+    {
+        "q": "CLRF f realiza:",
+        "a": "Limpia el registro f, dejándolo en cero",
+        "o": [
+            "Limpia el registro f, dejándolo en cero",
+            "Copia f hacia W siempre",
+            "Activa full-duplex",
+            "Selecciona un MUX externo"
+        ]
+    },
+    {
+        "q": "COMF f,d realiza:",
+        "a": "Complementa bit a bit el contenido de f",
+        "o": [
+            "Complementa bit a bit el contenido de f",
+            "Carga un literal decimal",
+            "Escribe en DATA OUT",
+            "Solicita una interrupción"
+        ]
+    },
+    {
+        "q": "Una secuencia típica para encender un bit de salida en un puerto de microcontrolador podría usar:",
+        "a": "BSF PORTx,b",
+        "o": [
+            "BSF PORTx,b",
+            "MOVLW STATUS",
+            "DMA PORTx,b",
+            "IOR PORTx,b"
+        ]
+    }
+];
+
+  const defaultState = () => ({
+    identity:null,
+    view:'welcome',
+    currentUnitIndex:0,
+    completedUnits:{},
+    unitScores:{},
+    completedMissions:{},
+    missionScores:{},
+    examAnswers:{},
+    examSubmitted:false,
+    finalScore:null,
+    startedAt:null,
+    finishedAt:null,
+    security:{incidents:[], challengeRequired:false, challengeCode:'', challengePassed:0, blockedShortcuts:0},
+    camera:{permission:false, preAuthorized:false, active:false, captures:0, lastCaptureAt:null, error:''},
+    consent:false,
+    fullscreenAccepted:false,
+    certificatePhotoDataUrl:'',
+    humanEvents:0,
+    nonce:Math.random().toString(36).slice(2),
+    terminal:false
+  });
+
+  let state = loadState();
+  let cameraStream = null;
+  let cameraTimer = null;
+  let countdownTimer = null;
+  let currentChallenge = '';
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STATE_KEY);
+      if(!raw) return defaultState();
+      const parsed = JSON.parse(raw);
+      return Object.assign(defaultState(), parsed, {security:Object.assign(defaultState().security, parsed.security||{}), camera:Object.assign(defaultState().camera, parsed.camera||{})});
+    }catch(e){return defaultState();}
+  }
+  function saveState(){localStorage.setItem(STATE_KEY, JSON.stringify(state));}
+  function resetState(){localStorage.removeItem(STATE_KEY); location.reload();}
+  function stopCameraStream(){try{if(cameraStream){cameraStream.getTracks().forEach(t=>t.stop()); cameraStream=null;}}catch(e){}}
+  function restartProtectedAttempt(reason){
+    if(!state.startedAt || state.terminal) return;
+    try{recordIncident('fullscreen-exit', reason || 'Salida de pantalla completa.');}catch(e){}
+    stopCameraStream();
+    sessionStorage.setItem('fortalezaRestartNotice','La sesión protegida fue reiniciada porque se salió de pantalla completa.');
+    localStorage.removeItem(STATE_KEY);
+    location.reload();
+  }
+  function esc(s){return String(s ?? '').replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));}
+  function toast(msg){toastNode.textContent = msg; toastNode.classList.remove('hidden'); clearTimeout(toastNode._t); toastNode._t=setTimeout(()=>toastNode.classList.add('hidden'),3500);}
+  function nowIso(){return new Date().toISOString();}
+  function formatTime(ms){ms=Math.max(0,ms); const s=Math.floor(ms/1000); const m=Math.floor(s/60); const r=s%60; return String(m).padStart(2,'0')+':'+String(r).padStart(2,'0');}
+  function elapsedMs(){return state.startedAt ? Date.now() - new Date(state.startedAt).getTime() : 0;}
+  function remainingMs(){return TOTAL_MS - elapsedMs();}
+  function progressPercent(){
+    const totalSteps = units.length + missions.length + 1;
+    const doneUnits = Object.keys(state.completedUnits).length;
+    const doneMissions = Object.keys(state.completedMissions).length;
+    return Math.min(100, Math.round(((doneUnits+doneMissions+(state.examSubmitted?1:0))/totalSteps)*100));
+  }
+  function allUnitsDone(){return units.every(u=>state.completedUnits[u.id]);}
+  function allMissionsDone(){return missions.every(m=>state.completedMissions[m.id]);}
+  function moduleScore(){return Object.values(state.unitScores).reduce((a,b)=>a+Number(b||0),0);}
+  function missionScore(){return Object.values(state.missionScores).reduce((a,b)=>a+Number(b||0),0);}
+  function examScoreRaw(){return examQuestions.reduce((acc,q,i)=>acc + (state.examAnswers[i]===q.a?1:0),0);}
+  function securityPenalty(){return Math.min(10, Math.round((state.security.incidents.length*0.6 + state.security.blockedShortcuts*0.3)*10)/10);}
+  function finalScore(){
+    const unitPart = moduleScore();
+    const missionPart = missionScore();
+    const examPart = examScoreRaw();
+    return Math.max(0, Math.round((unitPart + missionPart + examPart - securityPenalty())*10)/10);
+  }
+
+  function shell(inner){
+    const time = state.startedAt ? formatTime(remainingMs()) : '--:--';
+    return `<div class="toolbar">
+      <div class="brand"><div class="brand-icon">FB</div><div><h2>${esc(moduleData.title)}</h2><small>${esc(state.identity?.student_name || 'Sesión no iniciada')}</small></div></div>
+      <div class="toolbar-status" aria-label="Estado de la sesión">
+        <span>Tiempo <b id="clockMetric">${time}</b></span><span class="sep">·</span>
+        <span>Progreso <b id="progressMetric">${progressPercent()}%</b></span>
+        <button class="btn ghost small" id="btnFullscreen">Pantalla completa</button>
+      </div>
+    </div>
+    <video id="hiddenCameraVideo" autoplay playsinline muted style="position:fixed;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0;pointer-events:none"></video>
+    <div class="workspace">${inner}</div>`;
+  }
+
+  function render(){
+    saveState();
+    if(state.view==='welcome') return renderWelcome();
+    if(state.view==='results') return renderResults();
+    if(state.security.challengeRequired) return renderChallenge();
+    if(state.view==='session') return renderSession();
+    if(state.view==='missions') return renderMissions();
+    if(state.view==='exam') return renderExam();
+    renderWelcome();
+  }
+
+  function renderWelcome(){
+    app.innerHTML = `<div class="screen">
+      <div class="hero-grid">
+        <section class="hero glass">
+          <div class="top-kicker">Arquitectura del Computador</div>
+          <h1>Fortaleza Binaria</h1>
+          <p class="lead">Experiencia evaluativa de Arquitectura del Computador basada en estaciones prácticas, misiones técnicas y una prueba final con fundamentos de ALU, FPGA, buses, entrada/salida, DMA, protocolos y ensamblador para microcontroladores.</p>
+
+          <div class="quiet-note">Estaciones prácticas · Misiones técnicas · Evaluación final · Certificado</div>
+          <div class="station-shell" style="margin-top:18px;min-height:230px">
+            <div class="station-title"><h3>Mapa de recorrido</h3><span class="station-caption">U2.1 → U3.3</span></div>
+            <div class="protocol-link" style="height:150px;background:linear-gradient(90deg,rgba(255,255,255,.72),rgba(8,166,189,.08),rgba(242,177,52,.10),rgba(238,123,99,.08),rgba(255,255,255,.72))">
+              <div class="node">ALU<br><small>Operaciones</small></div><div class="packet"></div><div class="packet two"></div><div class="node">E/S<br><small>Protocolos</small></div>
+            </div>
+          </div>
+        </section>
+        <section class="panel glass">
+          <h2>Ingreso del estudiante</h2>
+          <p class="objective">Registre sus datos antes de iniciar. Esta información aparecerá en el certificado final.</p>
+          <div class="field"><label>Nombre completo</label><input id="studentName" autocomplete="name" placeholder="Ej. Aslin Gonzalo Botello Plata" value="${esc(state.identity?.student_name||'')}" /></div>
+          <div class="field"><label>Código o documento</label><input id="studentCode" placeholder="Código estudiantil o identificación" value="${esc(state.identity?.student_code||'')}" /></div>
+          <div class="field"><label>Grupo / curso</label><input id="studentGroup" placeholder="Arquitectura del Computador" value="${esc(state.identity?.group||'Arquitectura del Computador')}" /></div>
+          <label class="check"><input type="checkbox" id="consent" ${state.consent?'checked':''}> <span>Acepto presentar esta evaluación bajo condiciones de supervisión académica local.</span></label>
+          <label class="check"><input type="checkbox" id="understand"> <span>Comprendo que debo permanecer en pantalla completa y desarrollar la actividad sin cambiar de ventana.</span></label>
+          <label class="check"><input type="checkbox" id="cameraConsent" ${state.camera?.preAuthorized?'checked':''}> <span>Autorizo activar la cámara antes de ingresar al modo protegido.</span></label>
+          <div class="status-note" id="cameraPreflight">La autorización de cámara se solicitará aquí, antes de activar pantalla completa, para evitar interrupciones durante el examen.</div>
+          <div class="footer-actions"><button class="btn primary" id="startBtn">Ingresar a la fortaleza</button></div>
+
+        </section>
+      </div>
+    </div>`;
+    document.getElementById('startBtn').addEventListener('click', startSession);
+    document.getElementById('cameraConsent').addEventListener('change', e=>preAuthorizeCamera(e.target));
+  }
+  async function startSession(){
+    const name = document.getElementById('studentName').value.trim().replace(/\s+/g,' ');
+    const code = document.getElementById('studentCode').value.trim();
+    const group = document.getElementById('studentGroup').value.trim() || 'Arquitectura del Computador';
+    const consent = document.getElementById('consent').checked;
+    const understand = document.getElementById('understand').checked;
+    const cameraConsent = document.getElementById('cameraConsent').checked;
+    if(name.split(' ').length < 2){toast('Ingrese nombre y apellido completos.'); return;}
+    if(!consent || !understand){toast('Debe aceptar el consentimiento y las condiciones de integridad.'); return;}
+    if(!cameraConsent && !state.camera.active){toast('Debe autorizar la cámara antes de iniciar.'); return;}
+    state.identity = state.identity || {record_id: cryptoRandom(), started_record_at: nowIso()};
+    state.identity.student_name = name;
+    state.identity.student_code = code;
+    state.identity.group = group;
+    state.identity.module = moduleData.title;
+    state.identity.app_version = APP_VERSION;
+    state.consent = true;
+    saveState();
+    try{
+      await ensureCameraReady();
+    }catch(e){
+      state.camera.error = e && e.message ? e.message : 'No se pudo activar la cámara.';
+      state.camera.preAuthorized = false;
+      saveState();
+      toast('Debe permitir la cámara antes de ingresar al examen.');
+      return;
+    }
+    try{
+      await requestFullscreen();
+      state.fullscreenAccepted = !!document.fullscreenElement;
+    }catch(e){
+      state.fullscreenAccepted = false;
+      toast('Debe permitir pantalla completa para iniciar.');
+      return;
+    }
+    if(!document.fullscreenElement){
+      toast('Active pantalla completa para ingresar al examen.');
+      return;
+    }
+    state.startedAt = state.startedAt || nowIso();
+    state.view = 'session';
+    state.currentUnitIndex = state.currentUnitIndex || 0;
+    saveState();
+    scheduleCamera();
+    startTimers();
+    render();
+  }
+
+  async function preAuthorizeCamera(box){
+    const status = document.getElementById('cameraPreflight');
+    if(!box.checked){state.camera.preAuthorized=false; saveState(); if(status) status.textContent='La cámara debe autorizarse antes de iniciar el examen.'; return;}
+    box.disabled = true;
+    if(status) status.textContent = 'Solicitando permiso de cámara...';
+    try{
+      await ensureCameraReady();
+      state.camera.preAuthorized = true;
+      state.camera.error = '';
+      saveState();
+      if(status) status.textContent = 'Cámara autorizada. Ahora puede ingresar a la fortaleza y activar pantalla completa.';
+      toast('Cámara autorizada correctamente.');
+    }catch(e){
+      state.camera.preAuthorized = false;
+      state.camera.error = e && e.message ? e.message : 'Permiso de cámara no concedido.';
+      saveState();
+      box.checked = false;
+      if(status) status.textContent = 'No fue posible activar la cámara. Debe permitirla para iniciar.';
+      toast('No fue posible activar la cámara.');
+    }finally{
+      box.disabled = false;
+    }
+  }
+
+  function cryptoRandom(){
+    if(window.crypto && crypto.randomUUID) return crypto.randomUUID();
+    return 'rec-'+Date.now()+'-'+Math.random().toString(36).slice(2);
+  }
+  async function requestFullscreen(){
+    const el = document.documentElement;
+    if(!document.fullscreenElement && el.requestFullscreen) await el.requestFullscreen();
+  }
+
+  async function ensureCameraReady(){
+    if(cameraStream && cameraStream.getVideoTracks && cameraStream.getVideoTracks().some(t=>t.readyState==='live')){
+      state.camera.permission = true; state.camera.preAuthorized = true; state.camera.active = true; saveState(); attachCameraVideo(); return;
+    }
+    return startCamera();
+  }
+  async function startCamera(){
+    if(cameraStream && cameraStream.getVideoTracks && cameraStream.getVideoTracks().some(t=>t.readyState==='live')){
+      state.camera.permission = true; state.camera.preAuthorized = true; state.camera.active = true; saveState(); attachCameraVideo(); return;
+    }
+    if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('El navegador no expone getUserMedia.');
+    cameraStream = await navigator.mediaDevices.getUserMedia({video:{width:{ideal:800},height:{ideal:450}}, audio:false});
+    state.camera.permission = true;
+    state.camera.preAuthorized = true;
+    state.camera.active = true;
+    state.camera.error = '';
+    saveState();
+    setTimeout(()=>attachCameraVideo(),100);
+  }
+  function attachCameraVideo(){
+    const v = document.getElementById('cameraVideo') || document.getElementById('hiddenCameraVideo');
+    if(v && cameraStream){ v.srcObject = cameraStream; v.play().catch(()=>{}); }
+  }
+  function scheduleCamera(){
+    clearInterval(cameraTimer);
+    cameraTimer = setInterval(()=>captureCamera('periodica'), CAPTURE_INTERVAL_MS);
+    setTimeout(()=>captureCamera('inicio'), 1800);
+  }
+  function openCameraDb(){
+    return new Promise((resolve,reject)=>{
+      const req = indexedDB.open(DB_NAME,1);
+      req.onupgradeneeded = () => req.result.createObjectStore('captures',{keyPath:'id'});
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => reject(req.error);
+    });
+  }
+  async function saveCapture(entry){
+    try{
+      const db = await openCameraDb();
+      await new Promise((resolve,reject)=>{
+        const tx = db.transaction('captures','readwrite');
+        tx.objectStore('captures').put(entry);
+        tx.oncomplete=resolve; tx.onerror=()=>reject(tx.error);
+      });
+      db.close();
+    }catch(e){recordIncident('camera-store-error','No se pudo guardar captura local: '+e.message);}
+  }
+  async function captureCamera(reason){
+    if(!cameraStream) return;
+    const video = document.getElementById('cameraVideo') || document.getElementById('hiddenCameraVideo') || document.createElement('video');
+    if(!video.srcObject) video.srcObject = cameraStream;
+    const w = 640, h = 360;
+    const canvas = document.createElement('canvas'); canvas.width=w; canvas.height=h;
+    const ctx = canvas.getContext('2d');
+    try{ctx.drawImage(video,0,0,w,h);}catch(e){return;}
+    const dataUrl = canvas.toDataURL('image/jpeg',0.58);
+    const entry = {id: state.identity.record_id+'-'+Date.now(), record_id:state.identity.record_id, studentName:state.identity.student_name, reason, at:nowIso(), minute:Math.round(elapsedMs()/60000), dataUrl};
+    await saveCapture(entry);
+    state.camera.captures += 1;
+    state.camera.lastCaptureAt = entry.at;
+    saveState();
+    
+    return entry;
+  }
+
+  function startTimers(){
+    clearInterval(countdownTimer);
+    countdownTimer = setInterval(()=>{
+      const c=document.getElementById('clockMetric'); if(c) c.textContent=formatTime(remainingMs());
+      if(state.startedAt && remainingMs()<=0 && !state.examSubmitted){recordIncident('time-ended','El tiempo máximo del examen terminó.'); submitExam(true);}
+    },1000);
+  }
+
+  function navigation(active){
+    const items = units.map((u,i)=>`<div class="module-pill ${active==='unit'&&i===state.currentUnitIndex?'active':''} ${state.completedUnits[u.id]?'done':''}"><div class="module-dot">${state.completedUnits[u.id]?'✓':u.label.replace('U','')}</div><div><strong>${u.label} · ${esc(u.title)}</strong><small>${esc(u.short)}</small></div></div>`).join('')+
+    `<div class="module-pill ${active==='missions'?'active':''} ${allMissionsDone()?'done':''}"><div class="module-dot">M</div><div><strong>Misiones del laboratorio</strong><small>Retos integradores de criterio arquitectónico.</small></div></div>`+
+    `<div class="module-pill ${active==='exam'?'active':''} ${state.examSubmitted?'done':''}"><div class="module-dot">F</div><div><strong>Evaluación final</strong><small>50 preguntas con ensamblador de microcontroladores.</small></div></div>`;
+    return `<aside class="nav-card glass"><span class="eyebrow">Secuencia obligatoria</span><div class="progress"><i style="width:${progressPercent()}%"></i></div><div class="module-list">${items}</div><div class="quiet-note">Avance guardado automáticamente en este navegador.</div></aside>`;
+  }
+
+  function sidePanel(){
+    return `<aside class="side-card glass">
+      <h3>Supervisión</h3>
+      <div class="camera-box" id="cameraBox"><video id="cameraVideo" autoplay playsinline muted></video><div class="camera-stamp">${state.camera.active?'Cámara activa':'Cámara pendiente'}</div></div>
+      <div class="quiet-note">Permanezca en pantalla completa hasta finalizar.</div>
+      <div class="footer-actions"><button class="btn ghost small" id="btnCapture">Actualizar cámara</button></div>
+    </aside>`;
+  }
+  function renderSession(){
+    const unit = units[state.currentUnitIndex] || units[0];
+    app.innerHTML = shell(`<div class="main-view"><div class="layout">${navigation('unit')}<main class="mission-card glass">${renderUnit(unit)}</main>${sidePanel()}</div></div>`);
+    bindCommon(); bindUnit(unit); attachCameraVideo(); startTimers();
+  }
+
+  function renderUnit(u){
+    const done = !!state.completedUnits[u.id];
+    const score = state.unitScores[u.id]||0;
+    const feedbackClass = !done ? '' : (score >= u.weight ? 'success' : 'warn');
+    const feedbackText = !done ? 'Realice la configuración solicitada y valide su respuesta.' : (score >= u.weight ? 'Configuración correcta. Estación superada.' : 'Estación cerrada con aciertos parciales. Revise el concepto antes de continuar.');
+    return `<div class="mission-header"><div><span class="badge">${esc(u.label)} · Estación práctica</span><h2 class="module-title">${esc(u.title)}</h2><p class="objective">${esc(u.objective)}</p></div><div class="metric"><span>Puntos</span><strong>${score}/${u.weight}</strong></div></div>
+      ${renderUnitVisual(u)}
+      <div class="visual"><div class="station-title"><h3>Misión de configuración</h3><span class="station-caption">Intento único</span></div><p class="objective">Seleccione los valores que completan correctamente la situación técnica planteada.</p>${renderUnitControls(u, done)}</div>
+      <div id="unitFeedback" class="status-note ${feedbackClass}">${feedbackText}</div>
+      <div class="footer-actions"><button class="btn ghost" id="btnPrevUnit" ${state.currentUnitIndex===0?'disabled':''}>Unidad anterior</button><button class="btn primary" id="btnValidateUnit" ${done?'disabled':''}>Validar estación</button><button class="btn gold" id="btnNextUnit" ${!done?'disabled':''}>Continuar</button></div>`;
+  }
+  function renderUnitVisual(u){
+    if(u.type==='alu') return `<div class="station-shell"><div class="station-title"><h3>Simulador lógico de 4 bits</h3><span class="station-caption">A=1001 · B=0110 · XOR</span></div><div class="alu-stage"><div class="reg-panel"><h3>Entrada A</h3><div class="bit-row" id="bitsA"></div><span class="op-chip">Decimal 9</span></div><div style="text-align:center"><div class="alu-body">ALU</div><div style="margin-top:10px"><span class="op-chip">ADD</span><span class="op-chip">SUB</span><span class="op-chip">AND</span><span class="op-chip">OR</span><span class="op-chip">XOR</span><span class="op-chip">NOT</span></div></div><div class="reg-panel"><h3>Entrada B / Salida Z</h3><div class="bit-row" id="bitsB"></div><div class="led-row" id="ledZ"></div></div></div></div>`;
+    if(u.type==='fpga') return `<div class="station-shell fpga-fabric"><div class="station-title"><h3>Fabric FPGA: LUT + MUX + routing</h3><span class="station-caption">Hardware reconfigurable</span></div><div class="fabric-row"><div class="block active">Input A/B<br><strong>1 / 0</strong></div><div class="wire"></div><div class="block active purple">LUT XOR<br><strong>Tabla 0110</strong></div><div class="block active">MUX<br><strong>Opcode 1</strong></div><div class="block">Salida Z<br><strong>1</strong></div></div></div>`;
+    if(u.type==='bus') return `<div class="station-shell bus-board"><div class="station-title"><h3 style="color:white">Placa base: tráfico procesador–memoria</h3><span class="station-caption" style="color:rgba(255,255,255,.72)">MAR · MBR · READ</span></div><div class="bus-stage"><div class="chip-node"><strong>CPU</strong><br><small>MAR 0x2A<br>MBR espera dato</small></div><div class="bus-stack"><div class="bus-line bus-address active"><span>Dirección</span></div><div class="bus-line bus-data active"><span>Datos</span></div><div class="bus-line bus-control active"><span>Control</span></div></div><div class="chip-node"><strong>RAM</strong><br><small>0x2A → 3C</small></div></div></div>`;
+    if(u.type==='io') return `<div class="station-shell"><div class="station-title"><h3>Mapa de Entrada/Salida</h3><span class="station-caption">IOR · IOW · STATUS</span></div><div class="io-stage"><div class="device-card"><div class="device-icon">🧠</div><strong>CPU</strong><p class="small-note">Emite dirección y señal de control.</p></div><div class="device-card"><div class="device-icon">🎛️</div><strong>Controlador E/S</strong><div class="register-grid"><div class="register">STATUS</div><div class="register">CONTROL</div><div class="register">DATA IN</div><div class="register">DATA OUT</div></div></div><div class="device-card"><div class="device-icon">⌨️</div><strong>Periférico</strong><p class="small-note">Teclado o display mapeado.</p></div></div></div>`;
+    if(u.type==='dma') return `<div class="station-shell"><div class="station-title"><h3>Transferencia de bloques</h3><span class="station-caption">Polling · IRQ · DMA</span></div><div class="dma-stage"><div class="device-card"><div class="device-icon">🧠</div><strong>CPU</strong><p class="small-note">Coordina y libera el bus.</p></div><div class="device-card"><div class="device-icon">⚡</div><strong>Controlador DMA</strong><div class="dma-arrow"></div><p class="small-note">Transfiere bloques con baja intervención.</p></div><div class="device-card"><div class="device-icon">💾</div><strong>Disco → RAM</strong><p class="small-note">Bloques grandes de datos.</p></div></div></div>`;
+    return `<div class="station-shell"><div class="station-title"><h3>Enlace de comunicación</h3><span class="station-caption">Serial · Full-duplex · UART</span></div><div class="protocol-link"><div class="node">Dispositivo A<br><small>Transmisor/RX</small></div><div class="packet"></div><div class="packet two"></div><div class="node">Dispositivo B<br><small>Transmisor/RX</small></div></div></div>`;
+  }
+  function renderUnitControls(u, done){
+    if(u.type==='alu') return `<div class="lab-controls"><div class="select-card"><label>Entrada A</label><select id="u_a"><option>9</option><option>6</option><option>15</option><option>0</option></select></div><div class="select-card"><label>Entrada B</label><select id="u_b"><option>6</option><option>9</option><option>3</option><option>15</option></select></div><div class="select-card"><label>Operación</label><select id="u_op"><option>XOR</option><option>AND</option><option>OR</option><option>ADD</option><option>SUB</option><option>NOT A</option></select></div></div><p class="status-note">Objetivo: obtener <strong>${u.target.bin}</strong> usando A=${u.target.a}, B=${u.target.b} y operación ${u.target.op}.</p>`;
+    if(u.type==='fpga') return `<div class="lab-controls"><div class="select-card"><label>LUT principal</label><select id="u_lut"><option>XOR</option><option>AND</option><option>OR</option><option>NAND</option></select></div><div class="select-card"><label>Opcode activo</label><select id="u_opcode"><option>1</option><option>0</option><option>2</option></select></div><div class="select-card"><label>Bloque selector</label><select id="u_route"><option>MUX</option><option>MAR</option><option>DMA</option><option>STATUS</option></select></div></div>`;
+    if(u.type==='bus') return `<div class="lab-controls"><div class="select-card"><label>Operación</label><select id="u_operation"><option>READ</option><option>WRITE</option><option>IRQ</option></select></div><div class="select-card"><label>Dirección MAR</label><select id="u_address"><option>0x2A</option><option>0xA0</option><option>0xB0</option></select></div><div class="select-card"><label>Flujo del dato</label><select id="u_bus"><option>Datos RAM→CPU</option><option>Datos CPU→RAM</option><option>Dirección RAM→CPU</option></select></div></div>`;
+    if(u.type==='io') return `<div class="lab-controls"><div class="select-card"><label>Dirección</label><select id="u_address"><option>0xA0</option><option>0x2A</option><option>0xB0</option></select></div><div class="select-card"><label>Señal de control</label><select id="u_signal"><option>IOR</option><option>IOW</option><option>MEMR</option><option>MEMW</option></select></div><div class="select-card"><label>Registro objetivo</label><select id="u_register"><option>DATA IN</option><option>DATA OUT</option><option>MAR</option><option>ALU</option></select></div></div>`;
+    if(u.type==='dma') return `<div class="lab-controls"><div class="select-card"><label>Escenario</label><select id="u_scenario"><option>bloque grande disco a RAM</option><option>tecla ocasional</option><option>encender LED simple</option></select></div><div class="select-card"><label>Técnica</label><select id="u_technique"><option>DMA</option><option>Polling</option><option>Interrupción</option></select></div><div class="select-card"><label>Carga de CPU</label><select id="u_cpu"><option>baja</option><option>alta</option><option>constante</option></select></div></div>`;
+    return `<div class="lab-controls"><div class="select-card"><label>Modo</label><select id="u_mode"><option>Serial</option><option>Paralelo</option></select></div><div class="select-card"><label>Direccionalidad</label><select id="u_duplex"><option>Full-Duplex</option><option>Half-Duplex</option><option>Simplex</option></select></div><div class="select-card"><label>Protocolo</label><select id="u_protocol"><option>UART</option><option>MAR</option><option>DMA</option><option>ALU</option></select></div></div>`;
+  }
+
+  function bindUnit(u){
+    bindCommon();
+    document.getElementById('btnValidateUnit')?.addEventListener('click',()=>validateUnit(u));
+    document.getElementById('btnNextUnit')?.addEventListener('click',()=>{
+      if(state.currentUnitIndex < units.length-1){state.currentUnitIndex++; state.view='session';}
+      else {state.view='missions';}
+      render();
+    });
+    document.getElementById('btnPrevUnit')?.addEventListener('click',()=>{if(state.currentUnitIndex>0){state.currentUnitIndex--; render();}});
+    if(u.type==='alu') drawBits(9,6,15);
+  }
+  function drawBits(a,b,z){
+    const bits = n => n.toString(2).padStart(4,'0').split('').map(x=>`<button class="bit ${x==='1'?'on':''}" disabled>${x}</button>`).join('');
+    const A=document.getElementById('bitsA'),B=document.getElementById('bitsB'),Z=document.getElementById('ledZ');
+    if(A) A.innerHTML = '<strong>A</strong>'+bits(a);
+    if(B) B.innerHTML = '<strong>B</strong>'+bits(b);
+    if(Z) Z.innerHTML = z.toString(2).padStart(4,'0').split('').map(x=>`<div class="led ${x==='1'?'on':''}">${x}</div>`).join('');
+  }
+  function getVal(id){return document.getElementById(id)?.value;}
+  function validateUnit(u){
+    if(state.completedUnits[u.id]) return;
+    let ok=false, partial=0;
+    if(u.type==='alu'){ok = getVal('u_a')=='9' && getVal('u_b')=='6' && getVal('u_op')==='XOR'; partial = (getVal('u_a')=='9')+(getVal('u_b')=='6')+(getVal('u_op')==='XOR');}
+    if(u.type==='fpga'){ok = getVal('u_lut')==='XOR' && getVal('u_opcode')==='1' && getVal('u_route')==='MUX'; partial = (getVal('u_lut')==='XOR')+(getVal('u_opcode')==='1')+(getVal('u_route')==='MUX');}
+    if(u.type==='bus'){ok = getVal('u_operation')==='READ' && getVal('u_address')==='0x2A' && getVal('u_bus')==='Datos RAM→CPU'; partial = (getVal('u_operation')==='READ')+(getVal('u_address')==='0x2A')+(getVal('u_bus')==='Datos RAM→CPU');}
+    if(u.type==='io'){ok = getVal('u_address')==='0xA0' && getVal('u_signal')==='IOR' && getVal('u_register')==='DATA IN'; partial = (getVal('u_address')==='0xA0')+(getVal('u_signal')==='IOR')+(getVal('u_register')==='DATA IN');}
+    if(u.type==='dma'){ok = getVal('u_scenario')==='bloque grande disco a RAM' && getVal('u_technique')==='DMA' && getVal('u_cpu')==='baja'; partial = (getVal('u_scenario')==='bloque grande disco a RAM')+(getVal('u_technique')==='DMA')+(getVal('u_cpu')==='baja');}
+    if(u.type==='protocol'){ok = getVal('u_mode')==='Serial' && getVal('u_duplex')==='Full-Duplex' && getVal('u_protocol')==='UART'; partial = (getVal('u_mode')==='Serial')+(getVal('u_duplex')==='Full-Duplex')+(getVal('u_protocol')==='UART');}
+    const score = ok ? u.weight : Math.round((partial/3)*u.weight*10)/10;
+    state.completedUnits[u.id] = true;
+    state.unitScores[u.id] = score;
+    state.humanEvents++;
+    saveState();
+    toast(ok?'Unidad aprobada con configuración completa.':'Unidad cerrada con puntaje parcial.');
+    render();
+  }
+
+  function renderMissions(){
+    app.innerHTML = shell(`<div class="main-view"><div class="layout">${navigation('missions')}<main class="mission-card glass"><div class="mission-header"><div><span class="badge">Misiones del laboratorio</span><h2 class="module-title">Retos integradores de arquitectura</h2><p class="objective">Cada misión exige elegir una solución técnica. Al responder, se indicará si la decisión fue correcta o incorrecta.</p></div><div class="metric"><span>Puntos</span><strong>${missionScore()}/20</strong></div></div>${missions.map(renderMission).join('')}<div class="footer-actions"><button class="btn gold" id="btnToExam" ${!allMissionsDone()?'disabled':''}>Ir a evaluación final</button></div></main>${sidePanel()}</div></div>`);
+    bindCommon(); attachCameraVideo(); startTimers();
+    missions.forEach(m=>document.querySelectorAll('input[name="'+m.id+'"]').forEach(x=>x.addEventListener('change',()=>validateMission(m,x.value))));
+    document.getElementById('btnToExam')?.addEventListener('click',()=>{state.view='exam'; render();});
+  }
+  function renderMission(m){
+    const done=!!state.completedMissions[m.id]; const score=state.missionScores[m.id]||0; const ok=done && score>0;
+    return `<div class="visual"><div class="mission-header" style="margin-bottom:8px"><div><span class="badge">${esc(m.topic)}</span><h3>${esc(m.title)}</h3></div><div class="metric"><span>Puntos</span><strong>${score}/4</strong></div></div><p>${esc(m.prompt)}</p><div class="match-grid">${m.options.map(o=>`<label class="mission-option ${done && o===m.answer?'correct':''} ${done && o!==m.answer && state.completedMissions[m.id] && state.missionSelections?.[m.id]===o?'wrong':''}"><input type="radio" name="${m.id}" value="${esc(o)}" ${done?'disabled':''} ${done&&state.missionSelections?.[m.id]===o?'checked':''}><span>${esc(o)}</span></label>`).join('')}</div>${done?`<p class="status-note ${ok? 'success':'danger'}" style="margin-top:10px"><strong>${ok?'Correcta':'Incorrecta'}.</strong> ${ok?'La decisión técnica fue adecuada.':'La misión quedó cerrada. Respuesta correcta: <strong>'+esc(m.answer)+'</strong>.'}</p>`:''}</div>`;
+  }
+  function validateMission(m,value){
+    if(state.completedMissions[m.id]) return;
+    state.missionSelections = state.missionSelections || {};
+    state.missionSelections[m.id] = value;
+    const ok = value===m.answer;
+    state.completedMissions[m.id]=true;
+    state.missionScores[m.id]=ok?4:0;
+    state.humanEvents++;
+    saveState();
+    toast(ok?'Respuesta correcta.':'Respuesta incorrecta.');
+    renderMissions();
+  }
+  function renderExam(){
+    const submitted = state.examSubmitted;
+    const footer = submitted
+      ? `<button class="btn success" id="btnBackResults">Volver al resultado y certificado</button>`
+      : `<button class="btn primary" id="btnSubmitExam">Finalizar y calcular resultado</button>`;
+    app.innerHTML = shell(`<div class="main-view"><main class="final-card glass"><div class="mission-header"><div><span class="badge">Evaluación final</span><h2 class="module-title">Prueba conceptual y ensamblador de microcontroladores</h2><p class="objective">Seleccione una respuesta por pregunta. Al responder la primera pregunta se registrará una fotografía para el certificado final.</p></div><div class="metric"><span>Respondidas</span><strong id="answeredMetric">${Object.keys(state.examAnswers).length}/${examQuestions.length}</strong></div></div><div id="examList">${examQuestions.map(renderQuestion).join('')}</div><div class="footer-actions">${footer}</div></main></div>`);
+    bindCommon(); startTimers();
+    document.querySelectorAll('input[data-q]').forEach(x=>x.addEventListener('change',()=>handleExamAnswer(x)));
+    document.getElementById('btnSubmitExam')?.addEventListener('click',()=>submitExam(false));
+    document.getElementById('btnBackResults')?.addEventListener('click',()=>{state.view='results'; render();});
+  }
+  function renderQuestion(q,i){
+    const answered = state.examAnswers[i];
+    const submitted = state.examSubmitted;
+    const resolved = !!answered || submitted;
+    const isCorrect = answered === q.a;
+    const status = answered ? (isCorrect ? 'Correcta' : 'Incorrecta') : 'Pendiente';
+    const options = shuffleFixed(q.o, i);
+    return `<section class="question ${answered?'answered':''} ${resolved && answered ? (isCorrect?'correct':'incorrect') : ''}" data-question="${i}"><div class="question-head"><h4>${i+1}. ${esc(q.q)}</h4><span class="q-status">${status}</span></div><div class="options revealed">${options.map(o=>`<label class="option ${answered===o?'selected':''} ${resolved && o===q.a?'is-correct':''} ${resolved && answered===o && o!==q.a?'is-wrong':''}"><input type="radio" data-q="${i}" name="q${i}" value="${esc(o)}" ${answered===o?'checked':''} ${answered||submitted?'disabled':''}><span>${esc(o)}</span></label>`).join('')}</div>${resolved && answered?`<div class="q-feedback ${isCorrect?'ok':'bad'}"><strong>${isCorrect?'Correcta':'Incorrecta'}.</strong> ${isCorrect?'La opción seleccionada coincide con el criterio esperado.':'Respuesta correcta: <strong>'+esc(q.a)+'</strong>.'}</div>`:''}</section>`;
+  }
+  function handleExamAnswer(input){
+    const idx = Number(input.dataset.q);
+    if(state.examSubmitted || state.examAnswers[idx]) return;
+    const wasFirstAnswer = Object.keys(state.examAnswers).length === 0;
+    state.examAnswers[idx] = input.value;
+    state.humanEvents++;
+    saveState();
+    if(wasFirstAnswer && !state.certificatePhotoDataUrl){
+      captureCamera('primera-pregunta-certificado').then(entry=>{
+        if(entry && entry.dataUrl){
+          state.certificatePhotoDataUrl = entry.dataUrl;
+          saveState();
+        }
+      }).catch(e=>{
+        state.camera.error = e && e.message ? e.message : 'No se pudo registrar fotografía para certificado.';
+        saveState();
+      });
+    }
+    const section = input.closest('.question');
+    if(section){
+      section.outerHTML = renderQuestion(examQuestions[idx], idx);
+    }
+    const metric = document.getElementById('answeredMetric');
+    if(metric) metric.textContent = Object.keys(state.examAnswers).length + '/' + examQuestions.length;
+  }
+  function shuffleFixed(arr,seed){
+    const a=arr.slice();
+    for(let i=a.length-1;i>0;i--){const j=(seed*7+i*3)%a.length; [a[i],a[j]]=[a[j],a[i]];}
+    return a;
+  }
+  async function submitExam(forced){
+    if(state.examSubmitted && state.view==='results') return;
+    const unanswered = examQuestions.length - Object.keys(state.examAnswers).length;
+    if(unanswered>0 && !forced){ if(!confirm('Faltan '+unanswered+' preguntas por responder. ¿Desea finalizar?')) return; }
+    try{
+      await Promise.race([
+        captureCamera('cierre'),
+        new Promise(resolve=>setTimeout(resolve, 1400))
+      ]);
+    }catch(e){
+      state.camera.error = e && e.message ? e.message : 'No se pudo registrar la captura final.';
+    }
+    state.examSubmitted=true;
+    state.finishedAt=nowIso();
+    state.finalScore=finalScore();
+    state.terminal=true;
+    state.security.challengeRequired=false;
+    state.security.challengeCode='';
+    state.view='results';
+    saveState();
+    renderResults();
+  }
+
+  function renderResults(){
+    const score = state.finalScore ?? finalScore();
+    const passed = score >= PASSING_SCORE;
+    const deg = Math.min(360, Math.max(0, score*3.6));
+    app.innerHTML = shell(`<div class="main-view"><main class="results-card glass" style="max-width:1120px;margin:0 auto"><div class="mission-header"><div><span class="badge">Resultado final</span><h2 class="module-title">Dictamen arquitectónico</h2><p class="objective">La calificación integra estaciones prácticas, misiones y evaluación final.</p></div></div><div class="grid-2"><div><div class="result-ring" style="--score-deg:${deg}deg"><div class="result-ring-inner"><div><strong>${score}</strong><br><span>/100</span></div></div></div><p class="status-note ${passed?'success':'danger'}" style="text-align:center;margin-top:16px"><strong>${passed?'Aprobado':'No aprobado'}</strong> · Umbral ${PASSING_SCORE}/100</p></div><div class="visual"><h3>Resumen académico</h3><div class="grid-2"><div class="card-mini"><strong>${moduleScore()}</strong><br><small>Estaciones /30</small></div><div class="card-mini"><strong>${missionScore()}</strong><br><small>Misiones /20</small></div><div class="card-mini"><strong>${examScoreRaw()}</strong><br><small>Evaluación /50</small></div><div class="card-mini"><strong>${Object.keys(state.examAnswers).length}</strong><br><small>Preguntas respondidas</small></div></div><p class="status-note" style="margin-top:12px"><strong>Estudiante:</strong> ${esc(state.identity.student_name)}<br><strong>Grupo:</strong> ${esc(state.identity.group||'Arquitectura del Computador')}<br><strong>Fecha:</strong> ${new Date(state.finishedAt||nowIso()).toLocaleString()}</p></div></div><div class="certificate-preview" style="margin-top:18px"><span class="eyebrow">Certificado descargable</span><h2>Fortaleza Binaria</h2><p>Se certifica que <strong>${esc(state.identity.student_name)}</strong> presentó la evaluación autogestionada de Arquitectura del Computador en las unidades U2.1 a U3.3, con calificación final de <strong>${score}/100</strong>.</p></div><div class="footer-actions"><button class="btn success" id="btnCertificate">Descargar certificado HTML</button><button class="btn ghost" id="btnReview">Revisar respuestas</button><button class="btn danger" id="btnReset">Reiniciar intento local</button></div></main></div>`);
+    bindCommon(); startTimers();
+    document.getElementById('btnCertificate').addEventListener('click',downloadCertificate);
+    document.getElementById('btnReview').addEventListener('click',()=>{state.view='exam'; render();});
+    document.getElementById('btnReset').addEventListener('click',()=>{if(confirm('Esto borrará el progreso local de este navegador. ¿Continuar?')) resetState();});
+  }
+  function renderChallenge(){
+    currentChallenge = state.security.challengeCode || String(Math.floor(100000+Math.random()*900000));
+    state.security.challengeCode = currentChallenge; saveState();
+    app.innerHTML = `<div class="overlay"><div class="modal glass"><span class="eyebrow">Verificación humana</span><h2 style="font-size:34px;margin:12px 0">Sesión protegida</h2><p>Se detectaron incidentes de integridad. Para continuar, escriba el código mostrado.</p><div class="visual" style="text-align:center;font-size:42px;font-weight:bold;letter-spacing:.16em;color:var(--ink)">${currentChallenge}</div><div class="field"><label>Código de verificación</label><input id="challengeInput" inputmode="numeric" /></div><div class="footer-actions"><button class="btn primary" id="btnChallenge">Validar y continuar</button></div></div></div>`;
+    document.getElementById('btnChallenge').addEventListener('click',()=>{
+      if(document.getElementById('challengeInput').value.trim()===currentChallenge){state.security.challengeRequired=false; state.security.challengeCode=''; state.security.challengePassed++; state.humanEvents++; saveState(); render();}
+      else toast('Código incorrecto.');
+    });
+  }
+
+  function bindCommon(){
+    attachCameraVideo();
+    document.getElementById('btnFullscreen')?.addEventListener('click',()=>requestFullscreen());
+    document.getElementById('btnCapture')?.addEventListener('click',()=>captureCamera('manual'));
+    document.getElementById('btnActa')?.addEventListener('click',downloadActa);
+  }
+  function recordIncident(type, detail){
+    if(!state.startedAt || state.terminal) return;
+    state.security.incidents.push({type, detail, at:nowIso(), view:state.view});
+    if(state.security.incidents.length>0 && state.security.incidents.length % 4 === 0){state.security.challengeRequired=true;}
+    saveState();
+  }
+  document.addEventListener('visibilitychange',()=>{if(document.hidden) recordIncident('visibilitychange','Cambio de pestaña o ventana.');});
+  window.addEventListener('blur',()=>recordIncident('blur','Pérdida de foco de la ventana.'));
+  document.addEventListener('fullscreenchange',()=>{if(state.startedAt && !state.terminal && !document.fullscreenElement){setTimeout(()=>restartProtectedAttempt('Salida de pantalla completa.'),160);}});
+  document.addEventListener('contextmenu',e=>{if(state.startedAt){e.preventDefault(); state.security.blockedShortcuts++; recordIncident('contextmenu','Menú contextual bloqueado.');}});
+  document.addEventListener('copy',e=>{if(state.startedAt){e.preventDefault(); state.security.blockedShortcuts++; recordIncident('copy','Copia bloqueada.');}});
+  document.addEventListener('paste',e=>{if(state.startedAt){e.preventDefault(); state.security.blockedShortcuts++; recordIncident('paste','Pegado bloqueado.');}});
+  document.addEventListener('keydown',e=>{
+    const blocked = e.key==='F12' || (e.ctrlKey && ['s','p','u','c','v','x','a'].includes(e.key.toLowerCase())) || (e.ctrlKey && e.shiftKey && ['i','j','c'].includes(e.key.toLowerCase()));
+    if(blocked && state.startedAt){e.preventDefault(); state.security.blockedShortcuts++; recordIncident('shortcut','Atajo bloqueado: '+(e.ctrlKey?'Ctrl+':'')+(e.shiftKey?'Shift+':'')+e.key);}
+  });
+  document.addEventListener('pointerdown',()=>{if(state.startedAt){state.humanEvents++; if(state.humanEvents%12===0) saveState();}});
+
+  function download(filename, text, type){
+    const blob = new Blob([text],{type:type||'text/plain;charset=utf-8'});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href=url; a.download=filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url),800);
+  }
+  function acta(){
+    return {app_version:APP_VERSION, module:moduleData, identity:state.identity, startedAt:state.startedAt, finishedAt:state.finishedAt, completedUnits:state.completedUnits, unitScores:state.unitScores, completedMissions:state.completedMissions, missionScores:state.missionScores, examCorrect:examScoreRaw(), examAnswers:state.examAnswers, finalScore:state.finalScore ?? finalScore(), security:state.security, camera:state.camera, certificatePhotoDataUrl:state.certificatePhotoDataUrl, generatedAt:nowIso(), integrityHash:simpleHash(JSON.stringify({id:state.identity, score:state.finalScore, sec:state.security.incidents.length}))};
+  }
+  function downloadActa(){download('acta_fortaleza_binaria_'+safeName(state.identity?.student_name||'estudiante')+'.json', JSON.stringify(acta(),null,2), 'application/json;charset=utf-8');}
+  function downloadCertificate(){
+    const a=acta(); const passed=(a.finalScore>=PASSING_SCORE);
+    const photoHtml = a.certificatePhotoDataUrl ? `<img class="photo" src="${esc(a.certificatePhotoDataUrl)}" alt="Fotografía del estudiante">` : `<div class="photo photo-empty">Sin fotografía</div>`;
+    const cert = `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><title>Certificado Fortaleza Binaria</title><style>body{font-family:'Times New Roman',serif;background:#f6f3ee;color:#243746;padding:30px}.cert{max-width:980px;margin:auto;background:#fffdf8;border:10px double #0c9fb2;border-radius:24px;padding:54px;text-align:center;position:relative}h1{font-size:54px;margin:8px 0;color:#172533}h2{font-size:30px;color:#0b7180}.name{font-size:34px;font-weight:bold;margin:22px 0}.score{font-size:42px;font-weight:bold;color:${passed?'#2b8f67':'#c85a4f'}}.photo{position:absolute;right:36px;top:36px;width:118px;height:92px;object-fit:cover;border:4px solid #fff;border-radius:16px;box-shadow:0 10px 25px rgba(0,0,0,.18);background:#eef4f5}.photo-empty{display:grid;place-items:center;font-size:12px;color:#5d6b76;border:2px dashed #9bb5be}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:24px}.box{border:1px solid #d9e2e7;border-radius:14px;padding:12px;background:white}.small{font-size:13px;color:#5d6b76}.sig{margin-top:44px;display:flex;justify-content:space-around}.line{border-top:1px solid #243746;width:260px;padding-top:8px}@media print{body{background:white}.cert{border-color:#243746}}</style></head><body><section class="cert">${photoHtml}<div class="small">Universidad de La Guajira · Arquitectura del Computador</div><h1>Fortaleza Binaria</h1><h2>Certificado de presentación de evaluación autogestionada</h2><p>Se certifica que</p><div class="name">${esc(a.identity.student_name)}</div><p>presentó el examen virtual Offline First sobre ALU, FPGA, buses, entrada/salida, DMA, protocolos y fundamentos de ensamblador para microcontroladores.</p><div class="score">${a.finalScore}/100 · ${passed?'APROBADO':'NO APROBADO'}</div><div class="grid"><div class="box"><strong>${a.unitScores?Object.values(a.unitScores).reduce((x,y)=>x+Number(y||0),0):0}/30</strong><br><span class="small">Laboratorios</span></div><div class="box"><strong>${a.missionScores?Object.values(a.missionScores).reduce((x,y)=>x+Number(y||0),0):0}/20</strong><br><span class="small">Misiones</span></div><div class="box"><strong>${a.examCorrect*2}/50</strong><br><span class="small">Evaluación final</span></div></div><p class="small">Registro: ${esc(a.identity.record_id)} · Generado: ${new Date(a.generatedAt).toLocaleString()} · Incidentes: ${a.security.incidents.length} · Capturas locales: ${a.camera.captures}</p><p class="small">Hash de verificación local: ${a.integrityHash}</p><div class="sig"><div class="line">${esc(moduleData.author)}<br><span class="small">Autoría y diseño pedagógico</span></div><div class="line">Evidencia local del navegador<br><span class="small">Acta JSON descargable</span></div></div><script>window.onload=()=>setTimeout(()=>window.print(),600);<\/script></section></body></html>`;
+    download('certificado_fortaleza_binaria_'+safeName(a.identity.student_name)+'.html', cert, 'text/html;charset=utf-8');
+  }
+  function safeName(s){return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-zA-Z0-9_-]+/g,'_').replace(/^_+|_+$/g,'').slice(0,60)||'estudiante';}
+  function simpleHash(str){let h=2166136261; for(let i=0;i<str.length;i++){h^=str.charCodeAt(i); h+=(h<<1)+(h<<4)+(h<<7)+(h<<8)+(h<<24);} return ('00000000'+(h>>>0).toString(16)).slice(-8).toUpperCase();}
+
+  window.addEventListener('online',()=>toast('Conexión detectada. El examen sigue operando localmente.'));
+  window.addEventListener('offline',()=>toast('Sin conexión. El examen continúa en modo offline.'));
+  render();
+  const restartNotice = sessionStorage.getItem('fortalezaRestartNotice');
+  if(restartNotice){sessionStorage.removeItem('fortalezaRestartNotice'); setTimeout(()=>toast(restartNotice),500);}
+})();
+  </script>
+</body>
+</html>
